@@ -48,12 +48,12 @@ void getAQI(String web, int timeDelay) {
         Serial.println(root["data"]["idx"].as<char*>());
 
         display.setFont(ArialMT_Plain_24);
-        display.drawString(0, 0, "ESP32-AQI");
+        display.drawString(0, 0, "ESP32 AQI");
         display.setFont(ArialMT_Plain_16);
         display.drawString(0, 24, "status = ");
-        display.drawString(10, 24, root["status"].as<char*>());
+        display.drawString(64, 24, root["status"].as<char*>());
         display.drawString(0, 40, "AQI = ");
-        display.drawString(10, 40, root["data"]["aqi"].as<char*>());
+        display.drawString(48, 40, root["data"]["aqi"].as<char*>());
         display.display();
       }
       http.end();   //Close connection
@@ -74,8 +74,10 @@ void setup () {
   display.flipScreenVertically();
   display.setTextAlignment(TEXT_ALIGN_LEFT);
   display.setFont(ArialMT_Plain_24);
-  display.drawString(0, 0, "ESP32-AQI");
+  display.drawString(0, 0, "ESP32 AQI");
+  display.display();
 
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
