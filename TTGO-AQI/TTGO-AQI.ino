@@ -40,8 +40,8 @@ void timeDisplay() {
   display.setFont(ArialMT_Plain_24);
   display.drawString(0, 0, "ESP32 AQI");
   display.setFont(ArialMT_Plain_10);
-  display.drawString(0, 10, "Date ");
-  display.drawString(20, 10, data_time_s);
+  display.drawString(0, 30, "Date ");
+  display.drawString(28, 30, data_time_s);
 }
 
 void getAQI(String web)
