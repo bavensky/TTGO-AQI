@@ -18,10 +18,11 @@ int screenCount = 0;
 int counter = 1;
 
 const char* status;
-int data_aqi;
-float data_city_geo0;
-float data_city_geo1;
-const char* data_city_name;
+int data_aqi;               // Air Quality Index (AQI)
+float data_city_geo0;       // 18.787747
+float data_city_geo1;       // 98.9931284
+const char* data_city_name; // "ChiangMai"
+const char* data_time_s;    // "2019-01-30 10:00:00"
 
 uint32_t pevTime = 0;
 
@@ -30,9 +31,17 @@ void mainDisplay() {
   display.drawString(0, 0, "ESP32 AQI");
   display.setFont(ArialMT_Plain_16);
   display.drawString(0, 24, "City = ");
-  display.drawString(64, 24, data_city_name);
+  display.drawString(48, 24, data_city_name);
   display.drawString(0, 40, "AQI = ");
   display.drawString(48, 40, String(data_aqi));
+}
+
+void timeDisplay() {
+  display.setFont(ArialMT_Plain_24);
+  display.drawString(0, 0, "ESP32 AQI");
+  display.setFont(ArialMT_Plain_10);
+  display.drawString(0, 10, "Date ");
+  display.drawString(20, 10, data_time_s);
 }
 
 void getAQI(String web)
@@ -65,12 +74,15 @@ void getAQI(String web)
 
     status = root["status"]; // "ok"
     JsonObject& data = root["data"];
-    int data_aqi = data["aqi"]; // 152
+    data_aqi = data["aqi"]; // 152
 
     JsonObject& data_city = data["city"];
-    float data_city_geo0 = data_city["geo"][0]; // 18.787747
-    float data_city_geo1 = data_city["geo"][1]; // 98.9931284
-    const char* data_city_name = data_city["name"]; // "Chiang Mai"
+    data_city_geo0 = data_city["geo"][0]; // 18.787747
+    data_city_geo1 = data_city["geo"][1]; // 98.9931284
+    data_city_name = data_city["name"]; // "Chiang Mai"
+
+    JsonObject& data_time = data["time"];
+    data_time_s = data_time["s"]; // "2019-01-30 10:00:00"
 
     Serial.println("ESP32 AQI ");
     Serial.print("status : ");
@@ -100,9 +112,6 @@ void setup()
   display.init();
   display.flipScreenVertically();
   display.setTextAlignment(TEXT_ALIGN_LEFT);
-  display.setFont(ArialMT_Plain_24);
-  display.drawString(0, 0, "ESP32 AQI");
-  display.display();
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -125,13 +134,11 @@ void loop()
   display.clear();
   // draw the current demo method
   showOLED[screenCount]();
-
-  display.setTextAlignment(TEXT_ALIGN_RIGHT);
-  display.drawString(10, 128, String(millis()));
+  
   // write the buffer to the display
   display.display();
 
-  if (millis() - timeSinceLastModeSwitch > DEMO_DURATION) {
+  if (millis() - timeSinceLastModeSwitch > DISPLAY_DURATION) {
     screenCount = (screenCount + 1)  % screenLength;
     timeSinceLastModeSwitch = millis();
   }
