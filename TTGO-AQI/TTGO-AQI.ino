@@ -121,6 +121,7 @@ void setup()
     Serial.print(".");
   }
   Serial.println("WiFi Connected...");
+  getAQI("http://api.waqi.info/feed/chiangmai/?token=c215825b5de34b7c75cd570d1cf2c1e957acc963");
 }
 
 screen showOLED[] = {mainDisplay, timeDisplay};
@@ -129,7 +130,7 @@ long timeSinceLastModeSwitch = 0;
 
 void loop()
 {
-  getAQI("http://api.waqi.info/feed/chiangmai/?token=c215825b5de34b7c75cd570d1cf2c1e957acc963");
+//  getAQI("http://api.waqi.info/feed/chiangmai/?token=c215825b5de34b7c75cd570d1cf2c1e957acc963");
   // clear the display
   display.clear();
   // draw the current demo method
@@ -139,6 +140,7 @@ void loop()
   display.display();
 
   if (millis() - timeSinceLastModeSwitch > DISPLAY_DURATION) {
+    getAQI("http://api.waqi.info/feed/chiangmai/?token=c215825b5de34b7c75cd570d1cf2c1e957acc963");
     screenCount = (screenCount + 1)  % screenLength;
     timeSinceLastModeSwitch = millis();
   }
