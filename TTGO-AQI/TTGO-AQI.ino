@@ -40,8 +40,14 @@ void timeDisplay() {
   display.setFont(ArialMT_Plain_24);
   display.drawString(0, 0, "ESP32 AQI");
   display.setFont(ArialMT_Plain_10);
-  display.drawString(0, 30, "Date ");
-  display.drawString(28, 30, data_time_s);
+  display.drawString(0, 24, "Date ");
+  display.drawString(24, 24, data_time_s);
+  display.drawString(0, 34, "City ");
+  display.drawString(24, 34, data_city_name);
+  display.drawString(0, 44, "Location ");
+  display.drawString(44, 44, String(data_city_geo0));
+  display.drawString(0, 44, ", ");
+  display.drawString(74, 44, String(data_city_geo1));
 }
 
 void getAQI(String web)
@@ -56,7 +62,7 @@ void getAQI(String web)
   if (httpCode > 0)
   { //Check the returning code
     String payload = http.getString(); //Get the request response payload
-    Serial.println(payload);           //Print the response payload
+    //    Serial.println(payload);           //Print the response payload
 
     // Allocate JsonBuffer
     // Use arduinojson.org/assistant to compute the capacity.
@@ -130,12 +136,12 @@ long timeSinceLastModeSwitch = 0;
 
 void loop()
 {
-//  getAQI("http://api.waqi.info/feed/chiangmai/?token=c215825b5de34b7c75cd570d1cf2c1e957acc963");
+  //  getAQI("http://api.waqi.info/feed/chiangmai/?token=c215825b5de34b7c75cd570d1cf2c1e957acc963");
   // clear the display
   display.clear();
   // draw the current demo method
   showOLED[screenCount]();
-  
+
   // write the buffer to the display
   display.display();
 
